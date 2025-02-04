@@ -35,7 +35,7 @@ export function useWikiArticles() {
             generator: "random",
             grnnamespace: "0",
             prop: "extracts|pageimages",
-            grnlimit: "10",
+            grnlimit: "40",
             exintro: "1",
             exchars: "1000",
             exlimit: "max",
