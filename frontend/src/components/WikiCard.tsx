@@ -1,3 +1,5 @@
+import { Share2 } from 'lucide-react';
+
 interface WikiArticle {
     title: string;
     extract: string;
@@ -14,6 +16,25 @@ interface WikiCardProps {
 }
 
 export function WikiCard({ article }: WikiCardProps) {
+    const handleShare = async () => {
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: article.title,
+                    text: article.extract,
+                    url: `https://en.wikipedia.org/?curid=${article.pageid}`
+                });
+            } catch (error) {
+                console.error('Error sharing:', error);
+            }
+        } else {
+            // Fallback: Copy to clipboard
+            const url = `https://en.wikipedia.org/?curid=${article.pageid}`;
+            await navigator.clipboard.writeText(url);
+            alert('Link copied to clipboard!');
+        }
+    };
+
     return (
         <div className="h-screen w-full flex items-center justify-center snap-start relative">
             <div className="h-full w-full relative">
@@ -30,7 +51,16 @@ export function WikiCard({ article }: WikiCardProps) {
                 )}
                 {/* Content container with z-index to ensure it's above the image */}
                 <div className="absolute bottom-0 left-0 right-0 p-6 text-white z-10">
-                    <h2 className="text-2xl font-bold mb-3 drop-shadow-lg">{article.title}</h2>
+                    <div className="flex justify-between items-start mb-3">
+                        <h2 className="text-2xl font-bold drop-shadow-lg">{article.title}</h2>
+                        <button
+                            onClick={handleShare}
+                            className="p-2 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors"
+                            aria-label="Share article"
+                        >
+                            <Share2 className="w-5 h-5" />
+                        </button>
+                    </div>
                     <p className="text-gray-100 mb-4 drop-shadow-lg">{article.extract}</p>
                     <a
                         href={`https://en.wikipedia.org/?curid=${article.pageid}`}
