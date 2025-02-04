@@ -34,6 +34,9 @@ function App() {
 
   return (
     <div className="h-screen w-full bg-black text-white overflow-y-scroll snap-y snap-mandatory">
+      <div className="fixed top-4 left-4 z-50 text-2xl font-bold text-white drop-shadow-lg">
+        WikiTok
+      </div>
       {articles.map((article) => (
         <WikiCard key={article.pageid} article={article} />
       ))}
