@@ -63,7 +63,7 @@ export function WikiCard({ article }: WikiCardProps) {
                     <div className="absolute inset-0 bg-gray-900" />
                 )}
                 {/* Content container with z-index to ensure it's above the image */}
-                <div className="absolute bottom-0 left-0 right-0 p-6 text-white z-10">
+                <div className="absolute bottom-[5vh] left-0 right-0 p-6 text-white z-10">
                     <div className="flex justify-between items-start mb-3">
                         <h2 className="text-2xl font-bold drop-shadow-lg">{article.title}</h2>
                         <button
