@@ -1,9 +1,8 @@
 import { Share2 } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface WikiArticle {
     title: string;
-    extract: string;
     pageid: number;
     thumbnail?: {
         source: string;
@@ -18,13 +17,42 @@ interface WikiCardProps {
 
 export function WikiCard({ article }: WikiCardProps) {
     const [imageLoaded, setImageLoaded] = useState(false);
+    const [articleContent, setArticleContent] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchArticleContent = async () => {
+            try {
+                const response = await fetch(
+                    `https://en.wikipedia.org/w/api.php?` +
+                    `action=query&format=json&origin=*&prop=extracts&` +
+                    `pageids=${article.pageid}&explaintext=1&exintro=1&` +
+                    `exsentences=5`  // Limit to 5 sentences
+                );
+                const data = await response.json();
+                const content = data.query.pages[article.pageid].extract;
+                if (content) {
+                    setArticleContent(content);
+                }
+            } catch (error) {
+                console.error('Error fetching article content:', error);
+            }
+        };
+
+        fetchArticleContent();
+    }, [article.pageid]);
+
+    // Add debugging log
+    console.log('Article data:', {
+        title: article.title,
+        pageid: article.pageid
+    });
 
     const handleShare = async () => {
         if (navigator.share) {
             try {
                 await navigator.share({
                     title: article.title,
-                    text: article.extract,
+                    text: articleContent || '',
                     url: `https://en.wikipedia.org/?curid=${article.pageid}`
                 });
             } catch (error) {
@@ -74,7 +102,11 @@ export function WikiCard({ article }: WikiCardProps) {
                             <Share2 className="w-5 h-5" />
                         </button>
                     </div>
-                    <p className="text-gray-100 mb-4 drop-shadow-lg">{article.extract}</p>
+                    {articleContent ? (
+                        <p className="text-gray-100 mb-4 drop-shadow-lg">{articleContent}</p>
+                    ) : (
+                        <p className="text-gray-100 mb-4 drop-shadow-lg italic">Loading description...</p>
+                    )}
                     <a
                         href={`https://en.wikipedia.org/?curid=${article.pageid}`}
                         target="_blank"
