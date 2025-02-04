@@ -15,25 +15,32 @@ interface WikiCardProps {
 
 export function WikiCard({ article }: WikiCardProps) {
     return (
-        <div className="h-screen w-full flex items-center justify-center snap-start">
-            <div className="bg-white max-w-lg w-full mx-4 rounded-xl shadow-xl p-6">
+        <div className="h-screen w-full flex items-center justify-center snap-start relative">
+            <div className="h-full w-full relative">
                 {article.thumbnail && (
-                    <img
-                        src={article.thumbnail.source}
-                        alt={article.title}
-                        className="w-full h-48 object-cover rounded-lg mb-4"
-                    />
+                    <div className="absolute inset-0">
+                        <img
+                            src={article.thumbnail.source}
+                            alt={article.title}
+                            className="w-full h-full object-cover"
+                        />
+                        {/* Lighter overlay for better visibility */}
+                        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/70" />
+                    </div>
                 )}
-                <h2 className="text-2xl font-bold mb-3">{article.title}</h2>
-                <p className="text-gray-700">{article.extract}</p>
-                <a
-                    href={`https://en.wikipedia.org/?curid=${article.pageid}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-4 inline-block text-blue-500 hover:text-blue-600"
-                >
-                    Read more →
-                </a>
+                {/* Content container with z-index to ensure it's above the image */}
+                <div className="absolute bottom-0 left-0 right-0 p-6 text-white z-10">
+                    <h2 className="text-2xl font-bold mb-3 drop-shadow-lg">{article.title}</h2>
+                    <p className="text-gray-100 mb-4 drop-shadow-lg">{article.extract}</p>
+                    <a
+                        href={`https://en.wikipedia.org/?curid=${article.pageid}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-block text-white hover:text-gray-200 drop-shadow-lg"
+                    >
+                        Read more →
+                    </a>
+                </div>
             </div>
         </div>
     );
