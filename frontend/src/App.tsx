@@ -1,6 +1,7 @@
 import { useEffect, useRef, useCallback, useState } from 'react'
 import { WikiCard } from './components/WikiCard'
 import { useWikiArticles } from './hooks/useWikiArticles'
+import { Loader2 } from 'lucide-react'
 
 function App() {
   const [showAbout, setShowAbout] = useState(false)
@@ -79,8 +80,9 @@ function App() {
       ))}
       <div ref={observerTarget} className="h-10" />
       {loading && (
-        <div className="h-screen w-full flex items-center justify-center">
-          Loading...
+        <div className="h-screen w-full flex items-center justify-center gap-2">
+          <Loader2 className="h-6 w-6 animate-spin" />
+          <span>Loading...</span>
         </div>
       )}
     </div>
