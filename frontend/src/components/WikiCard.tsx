@@ -1,4 +1,5 @@
 import { Share2 } from 'lucide-react';
+import { useState } from 'react';
 
 interface WikiArticle {
     title: string;
@@ -16,6 +17,8 @@ interface WikiCardProps {
 }
 
 export function WikiCard({ article }: WikiCardProps) {
+    const [imageLoaded, setImageLoaded] = useState(false);
+
     const handleShare = async () => {
         if (navigator.share) {
             try {
@@ -38,16 +41,26 @@ export function WikiCard({ article }: WikiCardProps) {
     return (
         <div className="h-screen w-full flex items-center justify-center snap-start relative">
             <div className="h-full w-full relative">
-                {article.thumbnail && (
+                {article.thumbnail ? (
                     <div className="absolute inset-0">
                         <img
                             src={article.thumbnail.source}
                             alt={article.title}
-                            className="w-full h-full object-cover"
+                            className={`w-full h-full object-cover transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'
+                                }`}
+                            onLoad={() => setImageLoaded(true)}
+                            onError={(e) => {
+                                console.error('Image failed to load:', e);
+                                setImageLoaded(true); // Show content even if image fails
+                            }}
                         />
-                        {/* Lighter overlay for better visibility */}
+                        {!imageLoaded && (
+                            <div className="absolute inset-0 bg-gray-900 animate-pulse" />
+                        )}
                         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/70" />
                     </div>
+                ) : (
+                    <div className="absolute inset-0 bg-gray-900" />
                 )}
                 {/* Content container with z-index to ensure it's above the image */}
                 <div className="absolute bottom-0 left-0 right-0 p-6 text-white z-10">
