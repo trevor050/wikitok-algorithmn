@@ -93,7 +93,14 @@ export function WikiCard({ article }: WikiCardProps) {
                 {/* Content container with z-index to ensure it's above the image */}
                 <div className="absolute bottom-[10vh] left-0 right-0 p-6 text-white z-10">
                     <div className="flex justify-between items-start mb-3">
-                        <h2 className="text-2xl font-bold drop-shadow-lg">{article.title}</h2>
+                        <a
+                            href={`https://en.wikipedia.org/?curid=${article.pageid}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-gray-200 transition-colors"
+                        >
+                            <h2 className="text-2xl font-bold drop-shadow-lg">{article.title}</h2>
+                        </a>
                         <button
                             onClick={handleShare}
                             className="p-2 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors"
