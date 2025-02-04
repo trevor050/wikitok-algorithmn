@@ -60,7 +60,7 @@ function App() {
             <h2 className="text-xl font-bold mb-4">About WikiTok</h2>
             <p className="mb-4">A TikTok-style interface for exploring Wikipedia articles.</p>
             <p className="text-white/70">
-              Created by{' '}
+              Made with ❤️ by{' '}
               <a
                 href="https://x.com/Aizkmusic"
                 target="_blank"
