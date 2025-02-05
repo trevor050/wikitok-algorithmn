@@ -1,11 +1,12 @@
 import { Share2 } from 'lucide-react';
-import { useState, useEffect } from 'react';
-import { useLocalization } from '../hooks/useLocalization';
+import { useState } from 'react';
 
-interface WikiArticle {
+export interface WikiArticle {
     title: string;
+    extract: string;
     pageid: number;
-    thumbnail?: {
+    url: string;
+    thumbnail: {
         source: string;
         width: number;
         height: number;
@@ -16,34 +17,8 @@ interface WikiCardProps {
     article: WikiArticle;
 }
 
-const toWikiUrl = (title: string) => encodeURIComponent(title.replace(/ /g, '_'))
-
 export function WikiCard({ article }: WikiCardProps) {
     const [imageLoaded, setImageLoaded] = useState(false);
-    const [articleContent, setArticleContent] = useState<string | null>(null);
-    const {currentLanguage} = useLocalization()
-
-    useEffect(() => {
-        const fetchArticleContent = async () => {
-            try {
-                const response = await fetch(
-                    currentLanguage.api +
-                    `action=query&format=json&origin=*&prop=extracts&` +
-                    `pageids=${article.pageid}&explaintext=1&exintro=1&` +
-                    `exsentences=5`  // Limit to 5 sentences
-                );
-                const data = await response.json();
-                const content = data.query.pages[article.pageid].extract;
-                if (content) {
-                    setArticleContent(content);
-                }
-            } catch (error) {
-                console.error('Error fetching article content:', error);
-            }
-        };
-
-        fetchArticleContent();
-    }, [article.pageid]);
 
     // Add debugging log
     console.log('Article data:', {
@@ -56,16 +31,15 @@ export function WikiCard({ article }: WikiCardProps) {
             try {
                 await navigator.share({
                     title: article.title,
-                    text: articleContent || '',
-                    url: `${currentLanguage.article}${toWikiUrl(article.title)}`
+                    text: article.extract || '',
+                    url: article.url
                 });
             } catch (error) {
                 console.error('Error sharing:', error);
             }
         } else {
             // Fallback: Copy to clipboard
-            const url = `${currentLanguage.article}${toWikiUrl(article.title)}`;
-            await navigator.clipboard.writeText(url);
+            await navigator.clipboard.writeText(article.url);
             alert('Link copied to clipboard!');
         }
     };
@@ -99,7 +73,7 @@ export function WikiCard({ article }: WikiCardProps) {
                 <div className="absolute bottom-[10vh] left-0 right-0 p-6 text-white z-10">
                     <div className="flex justify-between items-start mb-3">
                         <a
-                            href={`${currentLanguage.article}${toWikiUrl(article.title)}`}
+                            href={article.url}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="hover:text-gray-200 transition-colors"
@@ -114,13 +88,9 @@ export function WikiCard({ article }: WikiCardProps) {
                             <Share2 className="w-5 h-5" />
                         </button>
                     </div>
-                    {articleContent ? (
-                        <p className="text-gray-100 mb-4 drop-shadow-lg line-clamp-6">{articleContent}</p>
-                    ) : (
-                        <p className="text-gray-100 mb-4 drop-shadow-lg italic">Loading description...</p>
-                    )}
+                    <p className="text-gray-100 mb-4 drop-shadow-lg line-clamp-6">{article.extract}</p>
                     <a
-                        href={`${currentLanguage.article}${toWikiUrl(article.title)}`}
+                        href={article.url}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-block text-white hover:text-gray-200 drop-shadow-lg"
