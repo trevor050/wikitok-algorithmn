@@ -102,13 +102,14 @@ export const LANGUAGES = [
     name: "Türkçe",
     flag: "https://hatscripts.github.io/circle-flags/flags/tr.svg",
     api: "https://tr.wikipedia.org/w/api.php?",
-    article: "https://tr.wikipedia.org/?curid=",
+    article: "https://tr.wikipedia.org/wiki/",
   },
   {
     id: "id",
+
     name: "Indonesian",
     flag: "https://hatscripts.github.io/circle-flags/flags/id.svg",
     api: "https://id.wikipedia.org/w/api.php?",
-    article: "https://id.wikipedia.org/?curid=",
+    article: "https://id.wikipedia.org/wiki/",
   },
 ];
