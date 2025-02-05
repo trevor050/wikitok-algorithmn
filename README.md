@@ -11,6 +11,7 @@ A TikTok-style interface for exploring random Wikipedia articles in multiple lan
 - Language selector with country flags
 - Preloading of images and content for smooth scrolling
 - Responsive design that works on mobile and desktop
+- Progressive Web App (PWA) support for installing as a standalone app
 
 ## Tech Stack
 
@@ -21,7 +22,7 @@ A TikTok-style interface for exploring random Wikipedia articles in multiple lan
 
 ## Development
 
-Run commands below in `/frontend` folder.
+Run the commands below in the `/frontend` folder.
 
 1. Install dependencies:
 
