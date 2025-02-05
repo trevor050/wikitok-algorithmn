@@ -1,4 +1,11 @@
-# WikiTok
+# WikiTok Algorithmn
+
+This is an attempt to design an opensource algorithm that functions as a related content search mechanism for Wikitok 
+
+
+
+
+# Orginal Repo:
 
 A TikTok-style interface for exploring random Wikipedia articles in multiple languages.
 
